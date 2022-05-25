@@ -1,0 +1,15 @@
+F:\Data\C#\ULearnMe\bin\Debug\net6.0\ULearnMe.exe
+F:\Data\C#\ULearnMe\bin\Debug\net6.0\ULearnMe.deps.json
+F:\Data\C#\ULearnMe\bin\Debug\net6.0\ULearnMe.runtimeconfig.json
+F:\Data\C#\ULearnMe\bin\Debug\net6.0\ULearnMe.dll
+F:\Data\C#\ULearnMe\bin\Debug\net6.0\ref\ULearnMe.dll
+F:\Data\C#\ULearnMe\bin\Debug\net6.0\ULearnMe.pdb
+F:\Data\C#\ULearnMe\obj\Debug\net6.0\ULearnMe.GeneratedMSBuildEditorConfig.editorconfig
+F:\Data\C#\ULearnMe\obj\Debug\net6.0\ULearnMe.AssemblyInfoInputs.cache
+F:\Data\C#\ULearnMe\obj\Debug\net6.0\ULearnMe.AssemblyInfo.cs
+F:\Data\C#\ULearnMe\obj\Debug\net6.0\ULearnMe.csproj.CoreCompileInputs.cache
+F:\Data\C#\ULearnMe\obj\Debug\net6.0\ULearnMe.dll
+F:\Data\C#\ULearnMe\obj\Debug\net6.0\ref\ULearnMe.dll
+F:\Data\C#\ULearnMe\obj\Debug\net6.0\ULearnMe.pdb
+F:\Data\C#\ULearnMe\obj\Debug\net6.0\ULearnMe.genruntimeconfig.cache
+F:\Data\C#\ULearnMe\obj\Debug\net6.0\ULearnMe.csproj.AssemblyReference.cache

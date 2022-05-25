@@ -1,0 +1,5 @@
+#!/bin/sh
+
+# NUMBER=$($1+$2)
+# NUMBER2= file.txt >> file.txt
+cat file.txt | head -n"$1" | tail -n"$2"

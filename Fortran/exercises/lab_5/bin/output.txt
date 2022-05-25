@@ -1,0 +1,6 @@
+postfix:  AB+CD-*                                           
+prefix:  *+AB-CD
+postfix:  ABC/-AK/L-*                                       
+prefix:  *-A/BC-/AKL
+postfix:  AB+CD-F*                                          
+prefix:  error

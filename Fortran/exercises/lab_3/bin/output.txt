@@ -1,0 +1,26 @@
+
+S1:
+AVERIN         
+BLINOV         
+DEMENTIEV      
+ERMAKOVA       
+
+S2:
+VASILIEV       
+PETROVA        
+KUZNETSOVA     
+MATVEEV        
+LAPTEVA        
+PAVLOVA        
+
+S1 после вставки:
+1.AVERIN         
+2.BLINOV         
+3.DEMENTIEV      
+4.ERMAKOVA       
+5.KUZNETSOVA     
+6.LAPTEVA        
+7.MATVEEV        
+8.PAVLOVA        
+9.PETROVA        
+10.VASILIEV       

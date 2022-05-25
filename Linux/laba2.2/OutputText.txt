@@ -1,0 +1,6 @@
+﻿LaTeX (/ˈlɑːtɛx/ LAH-tekh or /ˈleɪtɛx/ LAY-tekh,[1] often <em>stylized</em> as LATEX) is a **software** system for document preparation.
+[2] When writing, the writer uses plain text as opposed to the formatted <em>text</em> found in "What You See Is What You Get" word 
+processors like Microsoft Word, LibreOffice Writer and Apple Pages. The writer uses markup tagging <em>conventions</em> to define 
+the **general** structure of a document (such as article, book, and letter), to stylise text throughout a document (such as 
+bold and italics), and to add citations and cross-references. A TeX distribution such as TeX Live or MiKTeX is used to 
+produce an <em>output</em> file (such as PDF or DVI) suitable for printing or digital distribution.

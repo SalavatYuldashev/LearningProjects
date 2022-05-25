@@ -1,0 +1,145 @@
+\documentclass[a4paper,11pt]{article}
+
+\usepackage{wrapfig}
+\usepackage{amsmath}
+\usepackage{listings}
+\usepackage{color}
+\usepackage[dvipsnames]{xcolor}
+%Russian-specific packages
+%--------------------------------------
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[russian, english]{babel}
+%--------------------------------------
+
+\title{Отчёт по лабораторной работе №5 по дисциплине GNU/Linux}
+\author{Салават Юлдашев}
+\date{\today}
+
+\lstdefinestyle{mycode}{
+    backgroundcolor=\color{White},   
+    commentstyle=\color{ForestGreen},
+    keywordstyle=\color{Blue},
+    numberstyle=\tiny\color{Maroon},
+    stringstyle=\color{Plum},
+    basicstyle=\ttfamily\footnotesize,
+    breakatwhitespace=false,         
+    breaklines=true,                 
+    captionpos=b,                    
+    keepspaces=true,                 
+    numbers=left,                    
+    numbersep=5pt,                  
+    showspaces=false,                
+    showstringspaces=false,
+    showtabs=false,                  
+    frame=single,
+    tabsize=2,
+}
+
+\begin{document}
+\maketitle
+\newpage
+
+\section{Цель работы}
+  Определить оптимальную опцию оптимизации.
+
+\section{Задачи}
+  \begin{enumerate}
+    \item Написать программу на языке C++.
+    \item Написать скрипт который выполняет отпимизацию написанной программы.
+    \item Выбрать варант оптимизации дающий наибольшую производительность.
+    \item Оформить отчет с использованием LATEX.
+  \end{enumerate}
+
+\section{Платформы}
+  \subsection{Аппаратная платформа}
+    CPU: Intel i5-10600K (8) @ 4.800GHz
+
+  \subsection{Программная платформа}
+    OS: Linux Debian x86\_64
+    Версия ядра: Linux 5.10.16.3-microsoft-standard-WSL2
+
+\newpage
+\section{Ход работы}
+  \subsection{Сборка ядра}
+    \lstset{style=mycode}
+
+    Склонирована стабильная версия ядра 5.2.21 и скачаны необходимые исходники кода:
+    \begin{lstlisting}
+git clone https://gitlab.manjaro.org/packages/core/linux52
+updpkgsums
+    \end{lstlisting}
+
+    Распакован архив с исходным кодом:
+    \begin{lstlisting}
+tar -xf linux-5.2.tar.xz
+cd linux-5.2
+    \end{lstlisting}
+
+    Очищено дерево ядра:
+    \begin{lstlisting}
+make mrproper
+    \end{lstlisting}
+
+    Создан файл конфигурации для сборки ядра без символьной информации. Параметры оставлены по умолчанию:
+    \begin{lstlisting}
+make menuconfig
+    \end{lstlisting}
+
+    Измерено время сборки ядра, использованы 6 потоков:
+    \begin{lstlisting}
+time make -j6
+...
+make -j6  2780,43s user 306,34s system 490% cpu 10:29,24 total
+    \end{lstlisting}
+
+    Измерен объём собранного ядра:
+    \begin{lstlisting}
+du -m ./
+...
+1400	./
+    \end{lstlisting}
+
+    Размер - 1400 MB.
+    
+    Архив с ядром скопирован в другую папку, распакован и очищено дерево ядра:
+    \begin{lstlisting}
+mkdir withsyminfo
+cp linux-5.2.tar.xz withsyminfo/
+cd withsyminfo
+tar -xf linux-5.2.tar.xz
+cd linux-5.2
+make mrproper
+    \end{lstlisting}
+
+    Создан файл конфигурации для сборки ядра с символьной информацией.
+    Изменены параметры: в разделе настроек \textbf{Kernel hacking --> Compile-time checks and compiler options} включены параметры
+    \textbf{Compile the kernel with debug info} и \textbf{Reduce debugging information}.
+    \begin{lstlisting}
+make menuconfig
+    \end{lstlisting}
+
+    Аналогично скомпилировано ядро и измерено время сборки при 6 потоках, измерен объём:
+    \begin{lstlisting}
+time make -j6
+...
+make -j6  3214,60s user 356,45s system 484% cpu 12:17,50 total
+du -m ./
+...
+2308	./
+    \end{lstlisting}
+
+\section{Результаты измерений}
+  \begin{enumerate}
+    \item Время сборки ядра без символьной информации - \textbf{10m29s}.
+    \item Объём ядра, собранного без символьной информации - \textbf{1400MB}.
+    \item Время сборки ядра c символьной информацией - \textbf{12m17s}.
+    \item Объём ядра, собранного c символьной информацией - \textbf{2308MB}.
+    \item Разница мужду объёмами - \textbf{908MB}.
+  \end{enumerate}
+
+\section{Выводы}
+  В ходе работы был измерен объем ядра, собранного без и с символьной информацией.
+  Ожидаемо, время сборки и размер ядра получились больше при компиляции с символьной информацией.
+
+\end{document}

@@ -1,0 +1,497 @@
+\documentclass{article}
+\usepackage[T2A]{fontenc}
+\usepackage[utf8]{inputenc}
+\usepackage[left=35mm, top=2cm, right=1cm, bottom=20mm, nohead, nofoot]{geometry}
+\usepackage[russian]{babel}
+\usepackage{indentfirst}
+\usepackage{tikz}
+\usepackage{graphicx}
+\usepackage{listings}
+\lstset{
+     language=bash,
+     basicstyle=\ttfamily
+}
+
+\begin{document}
+
+\thispagestyle{empty}	% Отключаем колонтитулы
+
+\begin{center}
+	Санкт-Петербургский политехнический университет Петра Великого\\
+	Институт компьютерных наук и технологий\\
+	\bfseries{«Высшая школа программной инженерии»}
+\end{center}
+
+\vspace{20ex} % Задаем размер вертикального промежутка в явном виде
+
+\begin{center}
+	\begin{huge} {\bfseries{\scshape курсовая работа}} \end{huge}
+
+	\vspace{3ex}
+
+	{\bfseries Выбор оптимальной опции оптимизации}
+
+	по дисциплине: «Введение в профессиональную деятельность»
+\end{center}
+
+\vspace{30ex}
+
+\noindent Выполнил\\
+студент гр.в3530904/00021\hfill \begin{minipage}{0.6\textwidth} \hfill С.Н. Юлдашев\end{minipage}
+
+\vspace{3ex}
+
+\noindent Руководитель\\
+Ст. преподаватель\hfill \begin{minipage} {0.6\textwidth}\hfill А.В. Петров\end{minipage}
+
+\vspace{3ex}
+
+\hfill \begin{minipage}{0.6\textwidth} \hfill «15» июня 2021 г.\end{minipage}
+
+\vfill
+
+\begin{center}
+	Санкт-Петербург\\ 
+	2021
+\end{center}
+
+\newpage
+\tableofcontents
+\newpage
+\section{Цель работы}
+  Определить оптимальную опцию оптимизации.
+\section{Задачи}
+ \begin{enumerate}
+    \item Написать программу на языке C++.
+    \item Написать скрипт который выполняет оптимизацию написанной программы.
+    \item Выбрать вариант оптимизации дающий наибольшую производительность.
+    \item Оформить отчет с использованием LATEX.
+  \end{enumerate}
+  
+\newpage 
+\section{Введение}
+\setlength{\parindent}{1.25cm}Курсовая работа представляет полное описание выполнения задания по написанию сценария по поиску наиболее подходящей оптимизации.
+Целью выполнения сценария — опции оптимизации, оптимальные для заранее созданного приложения.
+На этой основе продемонстрированы различные уровни оптимизации, оформленные в виде сценария bash. Bash  - усовершенствованная и модернизированная вариация командной оболочки Bourne shell. Bash в основном соответствует стандарту POSIX, но с рядом расширений.\footnote{Advanced Bash-Scripting Guide - Расширенное руководство по написанию bash-скриптов.}Основной критерий упешной оптимизации - время выполнения программы. \\
+\newpage
+\section{Основная часть}
+Особенности выполнения
+\begin{itemize}
+\item Приложение без оптимизации обрабатывается 25,645 с.
+\item Вычисление занимаемого исполняемым файлом дискового пространства (в байтах) .
+\item Сценарий должен принимать только имя исходного файла программы
+\end{itemize}
+Вывод сценария должен содержать следующую информацию:
+\begin{itemize}
+\item Текущие опции оптимизации.
+\item Время затраченное программой на выполнение.
+\item Занимаемое программой дисковое пространство.
+\end{itemize}
+Программный код сценария start.sh\\[2mm]
+\begin{lstlisting}
+#!/bin/bash
+
+filename=$1
+
+for i in "-O0" "-Os" "-O1" "-O2" "-O3" \
+"-O2 -march=native" "-O3 -march=native" \
+"-O2 -march=native -funroll-loops" "-O3 -march=native -funroll-loops" \
+"-O3 -march=native -funroll-loops -fipa-cp -flto" \
+"-O3 -march=native -funroll-loops -fprofile-generate" \
+"-O3 -march=native -funroll-loops -fipa-cp -flto -fprofile-generate"
+do
+  echo "_____________________"
+  echo "  Optimization: $i:"
+  echo "....................."
+  c++ -Wall -Wextra $i $filename -o prg.veg
+  echo "  Time:"
+  time ./prg.veg 150 20
+  echo "....................."
+  echo "  Disk usage:"
+  du -b $filename
+  echo "_____________________"
+done
+\end{lstlisting}
+
+\setlength{\parindent}{1.25cm}Для выполнения задания наиболее подходящее решение - это использование цикла, поочередный перебор различных оптимизаций.  Для наглядности алгоритма и удобства восприятия представлена блок - схема, описывающая все шаги выполнения задания.
+\begin{center}
+\begin{tabular}{ | c | c |  c | }
+ \hline Optimization & Time & Size, B \\ 
+ \hline -O0 & 0m25,645s & 634 \\  
+ \hline -oS & 0m4,985s & 634 \\   
+ \hline -O1 & 0m3,705s & 634 \\  
+ \hline -O2 & 0m3,745s & 634 \\  
+ \hline -O3 & 0m3,611s & 634 \\  
+ \hline -O2 -march=native & 0m3,775s & 634 \\  
+ \hline -O3 -march=native & 0m3,619s & 634 \\  
+ \hline -O2 -march=native -funroll-loops & 0m3,722s
+ & 634 \\  
+ 
+ \hline -O3 -march=native -funroll-loops & 0m3,452s & 634 \\  
+ \hline -O3 -march=native -funroll-loops -fipa-cp -flto & 0m3,548s & 634 \\  
+ \hline -O3 -march=native -funroll-loops -fprofile-generate & 0m4,714s & 634 \\  
+ \hline -O3 -march=native -funroll-loops -fipa-cp -flto -fprofile-generate &  0m4,709s & 634 \\  
+ \hline
+\end{tabular}
+\end{center}
+\begin{center}Результат программы предствалены в таблице 1\end{center}
+%\includegraphics[scale=0.8]{PictureLatex}
+
+
+
+
+\section{ Заключение}
+\setlength{\parindent}{1.25cm}Для отимизации времени выполнения программы были использованы 12 методов и комбинаций методов. Наиболее эффективным оказался комбинированный метод оптимизации с оптимальной опцией, межпроцедурной оптимизацией, оптимизацией времени компоновки и с оптимизацией с обратной связью. Разница во времени выполнения программы с худшей и лучшей оптимизации составляет более 3,5 секунд,  очень существенна. Выбор подходящей оптимизации - один из наиболее результативных факторов ее успешности.\newpage
+\section{Список Литературы}
+\begin{enumerate}
+\item Уорд Б. "Внутреннее устройство LINUX"- СПБ.:Питер, 2016. - 384 с.: ил -(Серия "Для профессионалов")
+\item Шотс У. "Командная строка LINUX. Полное руководство."- СПБ.:Питер, 2017. - 480 с.: ил -(Серия "Для профессионалов")
+\item Cooper M. "Advanced Bash-Scripting Guide" Revision 10 Mar 2014 Revised by: 'PUBLICDOMAIN' release- 910 c
+\item URL : https://ru.wikipedia.org/wiki/Bash - статья в Википедии
+\end{enumerate}
+
+
+\newpage 
+\section{Приложение 1. Исходный код программы для тестирования.}
+\begin{lstlisting}
+#include <iostream>
+#include <algorithm>
+#include <stdlib.h>
+
+    const size_t MB = 1024 * 1024;
+    size_t MOD = 0;
+
+    unsigned char uniqueNumber() {
+        static unsigned char number = 0;
+        return ++number % MOD;
+    }
+
+    int main(int argc, char** argv) {
+        if (argc < 3) {
+            return 1;
+        }
+
+        size_t BLOCK_SIZE = atoi(argv[1]) * MB;
+        MOD = atoi(argv[2]);
+
+        unsigned char* garbage = (unsigned char*)malloc(BLOCK_SIZE);
+
+        std::generate_n(garbage, BLOCK_SIZE, uniqueNumber);
+        std::sort(garbage, garbage + BLOCK_SIZE);
+
+        free(garbage);
+
+        return 0;
+    }
+\end{lstlisting}
+
+\newpage 
+\section{Приложение 2. Блок-схема алгоритма.}
+\vspace{20ex}
+% Graphic for TeX using PGF
+% Title: D:\Data\Linux\Laba5\diag.dia
+% Creator: Dia v0.97.2
+% CreationDate: Fri Jun 18 16:42:01 2021
+% For: Salavat
+% \usepackage{tikz}
+% The following commands are not supported in PSTricks at present
+% We define them conditionally, so when they are implemented,
+% this pgf file will use them.
+\ifx\du\undefined
+  \newlength{\du}
+\fi
+\setlength{\du}{15\unitlength}
+\begin{tikzpicture}
+\pgftransformxscale{1.000000}
+\pgftransformyscale{-1.000000}
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\definecolor{dialinecolor}{rgb}{1.000000, 1.000000, 1.000000}
+\pgfsetfillcolor{dialinecolor}
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetbuttcap
+\pgfsetmiterjoin
+\pgfsetlinewidth{0.100000\du}
+\pgfsetbuttcap
+\pgfsetmiterjoin
+\pgfsetdash{}{0pt}
+\definecolor{dialinecolor}{rgb}{1.000000, 1.000000, 1.000000}
+\pgfsetfillcolor{dialinecolor}
+\pgfpathmoveto{\pgfpoint{18.675009\du}{1.300343\du}}
+\pgfpathlineto{\pgfpoint{23.241675\du}{1.300343\du}}
+\pgfpathcurveto{\pgfpoint{23.872201\du}{1.300343\du}}{\pgfpoint{24.383342\du}{1.858049\du}}{\pgfpoint{24.383342\du}{2.546015\du}}
+\pgfpathcurveto{\pgfpoint{24.383342\du}{3.233981\du}}{\pgfpoint{23.872201\du}{3.791687\du}}{\pgfpoint{23.241675\du}{3.791687\du}}
+\pgfpathlineto{\pgfpoint{18.675009\du}{3.791687\du}}
+\pgfpathcurveto{\pgfpoint{18.044483\du}{3.791687\du}}{\pgfpoint{17.533342\du}{3.233981\du}}{\pgfpoint{17.533342\du}{2.546015\du}}
+\pgfpathcurveto{\pgfpoint{17.533342\du}{1.858049\du}}{\pgfpoint{18.044483\du}{1.300343\du}}{\pgfpoint{18.675009\du}{1.300343\du}}
+\pgfusepath{fill}
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\pgfpathmoveto{\pgfpoint{18.675009\du}{1.300343\du}}
+\pgfpathlineto{\pgfpoint{23.241675\du}{1.300343\du}}
+\pgfpathcurveto{\pgfpoint{23.872201\du}{1.300343\du}}{\pgfpoint{24.383342\du}{1.858049\du}}{\pgfpoint{24.383342\du}{2.546015\du}}
+\pgfpathcurveto{\pgfpoint{24.383342\du}{3.233981\du}}{\pgfpoint{23.872201\du}{3.791687\du}}{\pgfpoint{23.241675\du}{3.791687\du}}
+\pgfpathlineto{\pgfpoint{18.675009\du}{3.791687\du}}
+\pgfpathcurveto{\pgfpoint{18.044483\du}{3.791687\du}}{\pgfpoint{17.533342\du}{3.233981\du}}{\pgfpoint{17.533342\du}{2.546015\du}}
+\pgfpathcurveto{\pgfpoint{17.533342\du}{1.858049\du}}{\pgfpoint{18.044483\du}{1.300343\du}}{\pgfpoint{18.675009\du}{1.300343\du}}
+\pgfusepath{stroke}
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node at (20.958342\du,2.746015\du){Begin};
+\definecolor{dialinecolor}{rgb}{1.000000, 1.000000, 1.000000}
+\pgfsetfillcolor{dialinecolor}
+\fill (20.928022\du,13.102255\du)--(25.421532\du,16.074017\du)--(20.928022\du,19.045780\du)--(16.434511\du,16.074017\du)--cycle;
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetmiterjoin
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (20.928022\du,13.102255\du)--(25.421532\du,16.074017\du)--(20.928022\du,19.045780\du)--(16.434511\du,16.074017\du)--cycle;
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node at (20.928022\du,16.269017\du){};
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node[anchor=west] at (19.267125\du,16.161960\du){if(argc < 3)};
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetbuttcap
+{
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetfillcolor{dialinecolor}
+% was here!!!
+\pgfsetarrowsend{stealth}
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (20.958342\du,3.791687\du)--(20.928022\du,13.102255\du);
+}
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetbuttcap
+{
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetfillcolor{dialinecolor}
+% was here!!!
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (16.434511\du,16.074017\du)--(13.702249\du,16.082129\du);
+}
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetbuttcap
+{
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetfillcolor{dialinecolor}
+% was here!!!
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (25.421532\du,16.074017\du)--(29.614069\du,16.068448\du);
+}
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node[anchor=west] at (14.973094\du,15.687787\du){YES};
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node[anchor=west] at (26.207697\du,15.748219\du){NO};
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetbuttcap
+{
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetfillcolor{dialinecolor}
+% was here!!!
+\pgfsetarrowsend{stealth}
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (13.744294\du,16.082129\du)--(13.765316\du,21.653037\du);
+}
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetbuttcap
+\pgfsetmiterjoin
+\pgfsetlinewidth{0.100000\du}
+\pgfsetbuttcap
+\pgfsetmiterjoin
+\pgfsetdash{}{0pt}
+\definecolor{dialinecolor}{rgb}{1.000000, 1.000000, 1.000000}
+\pgfsetfillcolor{dialinecolor}
+\pgfpathmoveto{\pgfpoint{19.132458\du}{30.980976\du}}
+\pgfpathlineto{\pgfpoint{24.167402\du}{30.980976\du}}
+\pgfpathcurveto{\pgfpoint{24.862583\du}{30.980976\du}}{\pgfpoint{25.426138\du}{31.465694\du}}{\pgfpoint{25.426138\du}{32.063624\du}}
+\pgfpathcurveto{\pgfpoint{25.426138\du}{32.661554\du}}{\pgfpoint{24.862583\du}{33.146272\du}}{\pgfpoint{24.167402\du}{33.146272\du}}
+\pgfpathlineto{\pgfpoint{19.132458\du}{33.146272\du}}
+\pgfpathcurveto{\pgfpoint{18.437277\du}{33.146272\du}}{\pgfpoint{17.873722\du}{32.661554\du}}{\pgfpoint{17.873722\du}{32.063624\du}}
+\pgfpathcurveto{\pgfpoint{17.873722\du}{31.465694\du}}{\pgfpoint{18.437277\du}{30.980976\du}}{\pgfpoint{19.132458\du}{30.980976\du}}
+\pgfusepath{fill}
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\pgfpathmoveto{\pgfpoint{19.132458\du}{30.980976\du}}
+\pgfpathlineto{\pgfpoint{24.167402\du}{30.980976\du}}
+\pgfpathcurveto{\pgfpoint{24.862583\du}{30.980976\du}}{\pgfpoint{25.426138\du}{31.465694\du}}{\pgfpoint{25.426138\du}{32.063624\du}}
+\pgfpathcurveto{\pgfpoint{25.426138\du}{32.661554\du}}{\pgfpoint{24.862583\du}{33.146272\du}}{\pgfpoint{24.167402\du}{33.146272\du}}
+\pgfpathlineto{\pgfpoint{19.132458\du}{33.146272\du}}
+\pgfpathcurveto{\pgfpoint{18.437277\du}{33.146272\du}}{\pgfpoint{17.873722\du}{32.661554\du}}{\pgfpoint{17.873722\du}{32.063624\du}}
+\pgfpathcurveto{\pgfpoint{17.873722\du}{31.465694\du}}{\pgfpoint{18.437277\du}{30.980976\du}}{\pgfpoint{19.132458\du}{30.980976\du}}
+\pgfusepath{stroke}
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node at (21.649930\du,32.263624\du){};
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetbuttcap
+{
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetfillcolor{dialinecolor}
+% was here!!!
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (13.774082\du,20.120602\du)--(13.780073\du,32.116656\du);
+}
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node[anchor=west] at (21.145581\du,32.269949\du){end};
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetbuttcap
+{
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetfillcolor{dialinecolor}
+% was here!!!
+\pgfsetarrowsend{stealth}
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (29.643799\du,16.132637\du)--(29.638937\du,22.744920\du);
+}
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetbuttcap
+{
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetfillcolor{dialinecolor}
+% was here!!!
+\pgfsetarrowsend{stealth}
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (13.745590\du,32.054599\du)--(17.873722\du,32.063624\du);
+}
+\definecolor{dialinecolor}{rgb}{1.000000, 1.000000, 1.000000}
+\pgfsetfillcolor{dialinecolor}
+\fill (26.209807\du,22.641111\du)--(26.209807\du,28.230280\du)--(32.868863\du,28.230280\du)--(32.868863\du,22.641111\du)--cycle;
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetmiterjoin
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (26.209807\du,22.641111\du)--(26.209807\du,28.230280\du)--(32.868863\du,28.230280\du)--(32.868863\du,22.641111\du)--cycle;
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node at (29.539335\du,25.630696\du){};
+\definecolor{dialinecolor}{rgb}{1.000000, 1.000000, 1.000000}
+\pgfsetfillcolor{dialinecolor}
+\fill (19.511894\du,6.389911\du)--(23.778870\du,6.389911\du)--(22.280250\du,10.507336\du)--(18.013274\du,10.507336\du)--cycle;
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetmiterjoin
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (19.511894\du,6.389911\du)--(23.778870\du,6.389911\du)--(22.280250\du,10.507336\du)--(18.013274\du,10.507336\du)--cycle;
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node at (20.896072\du,8.643624\du){};
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node[anchor=west] at (20.224328\du,8.222037\du){Input:};
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node[anchor=west] at (20.224328\du,9.022037\du){argc};
+\definecolor{dialinecolor}{rgb}{1.000000, 1.000000, 1.000000}
+\pgfsetfillcolor{dialinecolor}
+\fill (11.974073\du,21.613048\du)--(16.500443\du,21.613048\du)--(15.664014\du,23.911119\du)--(11.137644\du,23.911119\du)--cycle;
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetmiterjoin
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (11.974073\du,21.613048\du)--(16.500443\du,21.613048\du)--(15.664014\du,23.911119\du)--(11.137644\du,23.911119\du)--cycle;
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node at (13.819044\du,22.957083\du){};
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node[anchor=west] at (29.539335\du,25.435696\du){};
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node[anchor=west] at (13.016344\du,22.672895\du){output:};
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+%\node[anchor=west] at (13.016344\du,23.472895\du){"error"};
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node[anchor=west] at (27.190695\du,24.930292\du){1. create array};
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node[anchor=west] at (27.190695\du,25.730292\du){2. fill array};
+% setfont left to latex
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\node[anchor=west] at (27.190695\du,26.530292\du){3. sort array};
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetbuttcap
+{
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetfillcolor{dialinecolor}
+% was here!!!
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (29.512417\du,28.280595\du)--(29.475796\du,32.150985\du);
+}
+\pgfsetlinewidth{0.100000\du}
+\pgfsetdash{}{0pt}
+\pgfsetdash{}{0pt}
+\pgfsetbuttcap
+{
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetfillcolor{dialinecolor}
+% was here!!!
+\pgfsetarrowsend{stealth}
+\definecolor{dialinecolor}{rgb}{0.000000, 0.000000, 0.000000}
+\pgfsetstrokecolor{dialinecolor}
+\draw (29.495073\du,32.093154\du)--(25.426138\du,32.063624\du);
+}
+\end{tikzpicture}
+
+\end{document}
+

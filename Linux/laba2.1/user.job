@@ -1,0 +1,1 @@
+grep -E -o -h "[A-Za-z0-9._%+-]+@[A-Za-z0-9.-]+\.[A-Za-z]{2,6}" /mnt/d/Data/Linux/laba2.1/*.txt | sort > /mnt/d/Data/Linux/laba2.1/allemails.lst

@@ -1,0 +1,2 @@
+sudo /etc/init.d/atd start
+echo "The demon is ready"
