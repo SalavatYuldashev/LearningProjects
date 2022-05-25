@@ -10,9 +10,5 @@ internal class Program
         //mainQuestionUniverse.Print(mainQuestionUniverse.GetSquare(42));
         //Console.WriteLine(WantedMethods.GetLastHalf("0123456789"));
         //Console.WriteLine(WantedMethods.GetLastHalf("до ре ми фа соль ля си"));
-        Temp temp = new Temp();
-        //Temp.F();
-        Temp.G();
-        Temp.H();
-    }
+          }
 }
