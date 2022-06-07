@@ -10,12 +10,15 @@ namespace ULearnMe
     {
         public int ReverseOfNumber(int number)
         {
-            string stringNumber = number.ToString();
-            for (int i = 0; i < stringNumber.Length; i++)
+            string strNumber = number.ToString();
+            string revNumber = null;
+
+            for (int i = 0; i < strNumber.Length; i++)
             {
-               
+                revNumber += new String(strNumber.Substring(strNumber.Length-i-1,1));
             }
-            return number;
+            
+            return int.Parse(revNumber);
         }
     }
 }

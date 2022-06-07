@@ -1,6 +1,7 @@
 ﻿using ULearnMe;
 using System;
 using ULearnMe.Errors;
+using ULearnMe.EntryLevel;
 
 internal class Program
 {
@@ -13,6 +14,10 @@ internal class Program
         //Console.WriteLine(WantedMethods.GetLastHalf("0123456789"));
         //Console.WriteLine(WantedMethods.GetLastHalf("до ре ми фа соль ля си"));
         //MinimumFunction.Invoke();
+        //ReverseNumber reverseNumber = new ReverseNumber();
+        //Console.WriteLine(reverseNumber.ReverseOfNumber(21));
+        Arrow arrow = new Arrow();
+        Console.WriteLine(arrow.AngleBetweenArrows(18));
 
  
       
